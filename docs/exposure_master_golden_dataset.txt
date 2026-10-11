@@ -1,0 +1,490 @@
+=========================================================
+CAPITAL MANAGEMENT COPILOT
+DATA DICTIONARY
+Exposure Master Golden Dataset
+=========================================================
+
+Purpose
+-------
+
+The Exposure Master is the central dataset of the Capital
+Management Copilot project.
+
+It represents all balance sheet exposures and funding
+sources of a simplified universal bank.
+
+The dataset supports:
+
+- Credit Risk
+- Market Risk
+- Counterparty Risk
+- CVA
+- RWA calculations
+- NII projections
+- FTP allocation
+- Liquidity metrics (LCR / NSFR)
+- IRRBB analysis
+- Capital Planning
+- SVA analysis
+
+
+=========================================================
+IDENTIFICATION COLUMNS
+=========================================================
+
+exposure_id
+
+Unique identifier of the exposure.
+
+Examples:
+A001
+A002
+L001
+
+A = Asset exposure
+L = Liability exposure
+
+
+legal_entity
+
+Booking legal entity.
+
+Examples:
+DB_AG
+DB_ITALY
+DB_LUXEMBOURG
+
+
+portfolio
+
+High-level portfolio grouping.
+
+Examples:
+Retail
+Corporate
+Treasury
+Markets
+Funding
+
+
+business_unit
+
+Business line owning the exposure.
+
+Examples:
+Retail Banking
+Corporate Banking
+Treasury
+Markets
+
+
+booking_desk
+
+Desk or function managing the position.
+
+Examples:
+Retail Loans
+Corp Lending
+ALM
+Rates
+Liquidity
+Funding
+
+
+=========================================================
+BALANCE SHEET CLASSIFICATION
+=========================================================
+
+asset_liability_flag
+
+Indicates whether the exposure is:
+
+A = Asset
+L = Liability
+
+
+asset_class
+
+Broad exposure category.
+
+Examples:
+Credit
+Bond
+Derivative
+Cash
+Liability
+
+
+product_type
+
+Detailed product classification.
+
+Examples:
+Mortgage
+Corporate Loan
+Government Bond
+Covered Bond
+IRS
+FX Forward
+Retail Deposits
+AT1
+
+
+=========================================================
+COUNTERPARTY INFORMATION
+=========================================================
+
+counterparty_id
+
+Unique counterparty identifier.
+
+
+counterparty_name
+
+Counterparty description.
+
+
+counterparty_type
+
+Examples:
+
+Retail
+Corporate
+Bank
+Sovereign
+Central Bank
+Investor
+
+
+country
+
+Country of risk.
+
+Examples:
+
+DE
+FR
+IT
+US
+GB
+
+
+industry_sector
+
+Industry sector classification.
+
+Examples:
+
+Real Estate
+Industrial
+Government
+Financials
+Technology
+
+
+=========================================================
+FINANCIAL INFORMATION
+=========================================================
+
+currency
+
+Exposure currency.
+
+Examples:
+
+EUR
+USD
+GBP
+
+
+notional
+
+Original contractual amount.
+
+
+carrying_value
+
+Accounting carrying value.
+
+Typically used as:
+
+- Exposure at Default proxy
+- Balance sheet value
+- NII calculations
+
+
+=========================================================
+DATES
+=========================================================
+
+origination_date
+
+Date when exposure was originated.
+
+
+maturity_date
+
+Final contractual maturity date.
+
+
+repricing_date
+
+Next pricing review date.
+
+
+next_reset_date
+
+Next floating-rate reset date.
+
+
+=========================================================
+INTEREST RATE ATTRIBUTES
+=========================================================
+
+interest_rate_type
+
+Examples:
+
+Fixed
+Floating
+Swap
+
+
+benchmark
+
+Reference index.
+
+Examples:
+
+Euribor3M
+Euribor6M
+ESTR
+SOFR
+NONE
+
+
+interest_rate
+
+Current coupon or interest rate.
+
+
+spread
+
+Contractual spread over benchmark.
+
+
+=========================================================
+CREDIT RISK PARAMETERS
+=========================================================
+
+credit_rating
+
+Internal or external rating.
+
+Examples:
+
+AAA
+AA
+A
+BBB
+BB
+
+
+pd
+
+Probability of Default.
+
+Example:
+
+0.01 = 1%
+
+
+lgd
+
+Loss Given Default.
+
+Example:
+
+0.45 = 45%
+
+
+Expected Loss Formula
+
+EL = PD × LGD × EAD
+
+where
+
+EAD ≈ carrying_value
+
+
+=========================================================
+COLLATERAL INFORMATION
+=========================================================
+
+collateral_type
+
+Examples:
+
+Residential Property
+Commercial Property
+CSA Cash
+None
+
+
+collateral_value
+
+Current collateral value.
+
+
+=========================================================
+RWA PARAMETERS
+=========================================================
+
+risk_weight
+
+Risk weight applied for simplified
+credit RWA calculations.
+
+Examples:
+
+0.00
+0.20
+0.35
+1.00
+1.50
+
+
+Simplified Credit RWA Formula
+
+Credit RWA =
+Carrying Value × Risk Weight
+
+
+=========================================================
+LIQUIDITY ATTRIBUTES
+=========================================================
+
+hqla_flag
+
+Indicates if exposure qualifies as HQLA.
+
+Values:
+
+Y
+N
+
+
+hqla_level
+
+Examples:
+
+L1
+L2A
+L2B
+NONE
+
+
+encumbered_flag
+
+Indicates whether exposure is pledged.
+
+Values:
+
+Y
+N
+
+
+=========================================================
+REGULATORY CAPITAL
+=========================================================
+
+capital_type
+
+Capital classification.
+
+Values:
+
+NONE
+CET1
+AT1
+TIER2
+
+
+Examples:
+
+Shareholders Equity -> CET1
+
+AT1 Instrument -> AT1
+
+Tier2 Bond -> TIER2
+
+
+=========================================================
+PERFORMANCE STATUS
+=========================================================
+
+status
+
+Credit quality status.
+
+Examples:
+
+Performing
+Non Performing
+Defaulted
+
+
+=========================================================
+FUTURE EXTENSIONS
+=========================================================
+
+The Exposure Master can be linked with:
+
+market_sensitivities.csv
+
+Using:
+
+exposure_id
+
+
+Possible fields:
+
+DV01
+CS01
+FX_DELTA
+VEGA
+
+
+stress_scenarios.csv
+
+Used for:
+
+- Stress testing
+- VaR
+- Market Risk RWA
+
+
+ftp_attributes.csv
+
+Used for:
+
+- Funds Transfer Pricing
+- Business Unit profitability
+
+
+liquidity_attributes.csv
+
+Used for:
+
+- LCR
+- NSFR
+
+
+rwa_results.csv
+
+Stores calculation outputs:
+
+- Credit RWA
+- Market RWA
+- CVA RWA
+- Total RWA
